@@ -1,0 +1,228 @@
+{
+  "countries": [
+    {
+      "name": "-",
+      "value": "us"
+    },
+    {
+      "name": "United States",
+      "value": "US"
+    },
+    {
+      "name": "Australia",
+      "value": "AU"
+    },
+    {
+      "name": "Argentina",
+      "value": "AR"
+    },
+    {
+      "name": "Austria",
+      "value": "AT"
+    },
+    {
+      "name": "Belgium",
+      "value": "BE"
+    },
+    {
+      "name": "Brazil",
+      "value": "BR"
+    },
+    {
+      "name": "Bulgaria",
+      "value": "BG"
+    },
+    {
+      "name": "Canada",
+      "value": "CA"
+    },
+    {
+      "name": "China",
+      "value": "CN"
+    },
+    {
+      "name": "Colombia",
+      "value": "CO"
+    },
+    {
+      "name": "Cuba",
+      "value": "CU"
+    },
+    {
+      "name": "Czech Republic",
+      "value": "CZ"
+    },
+    {
+      "name": "Egypt",
+      "value": "EG"
+    },
+    {
+      "name": "France",
+      "value": "FR"
+    },
+    {
+      "name": "Germany",
+      "value": "DE"
+    },
+    {
+      "name": "Greece",
+      "value": "GR"
+    },
+    {
+      "name": "Hong Kong",
+      "value": "HK"
+    },
+    {
+      "name": "Hungary",
+      "value": "HU"
+    },
+    {
+      "name": "India",
+      "value": "IN"
+    },
+    {
+      "name": "Indonesia",
+      "value": "ID"
+    },
+    {
+      "name": "Ireland",
+      "value": "IE"
+    },
+    {
+      "name": "Israel",
+      "value": "IL"
+    },
+    {
+      "name": "Italy",
+      "value": "IT"
+    },
+    {
+      "name": "Japan",
+      "value": "JP"
+    },
+    {
+      "name": "Korea Republic",
+      "value": "KR"
+    },
+    {
+      "name": "Latvia",
+      "value": "LV"
+    },
+    {
+      "name": "Lithuania",
+      "value": "LT"
+    },
+    {
+      "name": "Malaysia",
+      "value": "MY"
+    },
+    {
+      "name": "Mexico",
+      "value": "MX"
+    },
+    {
+      "name": "Morocco",
+      "value": "MA"
+    },
+    {
+      "name": "Netherlands",
+      "value": "NL"
+    },
+    {
+      "name": "New Zealand",
+      "value": "NZ"
+    },
+    {
+      "name": "Nigeria",
+      "value": "NG"
+    },
+    {
+      "name": "Norway",
+      "value": "NO"
+    },
+    {
+      "name": "Philippines",
+      "value": "PH"
+    },
+    {
+      "name": "Poland",
+      "value": "PL"
+    },
+    {
+      "name": "Portugal",
+      "value": "PT"
+    },
+    {
+      "name": "Romania",
+      "value": "RO"
+    },
+    {
+      "name": "Russian Federation",
+      "value": "RU"
+    },
+    {
+      "name": "Saudi Arabia",
+      "value": "SA"
+    },
+    {
+      "name": "Serbia",
+      "value": "RS"
+    },
+    {
+      "name": "Singapore",
+      "value": "SG"
+    },
+    {
+      "name": "Slovakia",
+      "value": "SK"
+    },
+    {
+      "name": "Slovenia",
+      "value": "SI"
+    },
+    {
+      "name": "South Africa",
+      "value": "ZA"
+    },
+    {
+      "name": "Sweden",
+      "value": "SE"
+    },
+    {
+      "name": "Switzerland",
+      "value": "CH"
+    },
+    {
+      "name": "Taiwan",
+      "value": "TW"
+    },
+    {
+      "name": "Thailand",
+      "value": "TH"
+    },
+    {
+      "name": "Turkey",
+      "value": "TR"
+    },
+    {
+      "name": "Ukraine",
+      "value": "UA"
+    },
+    {
+      "name": "United Arab Emirates",
+      "value": "AE"
+    },
+    {
+      "name": "United Kingdom",
+      "value": "GB"
+    },
+    {
+      "name": "United States",
+      "value": "US"
+    },
+    {
+      "name": "Venezuela",
+      "value": "VE"
+    }
+  ]
+}

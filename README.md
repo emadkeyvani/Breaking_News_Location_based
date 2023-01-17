@@ -1,5 +1,8 @@
 # Breaking News
 
+This app retrive news based on your location
+If your location is not supported by API provider , U.S news will be shown
+
 Technologies and Libraries Used :
 <br>
 * MVVM

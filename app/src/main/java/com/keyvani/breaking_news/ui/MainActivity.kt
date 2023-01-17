@@ -39,7 +39,6 @@ class MainActivity : AppCompatActivity() {
     // that fragment recreated for use , we want to prevent this act
 
     private lateinit var binding: ActivityMainBinding
-
     private lateinit var breakingNewsFragment: BreakingNewsFragment
     private lateinit var searchNewsFragment: SearchNewsFragment
     private lateinit var bookmarksFragment: BookmarksFragment

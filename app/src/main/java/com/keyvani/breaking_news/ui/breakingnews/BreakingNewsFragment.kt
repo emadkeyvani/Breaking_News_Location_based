@@ -21,7 +21,7 @@ import com.keyvani.breaking_news.viewmodel.BreakingNewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class BreakingNewsFragment : Fragment(),MainActivity.OnBottomNavigationFragmentReselectedListener {
+class BreakingNewsFragment : Fragment() {
 
     private val viewModel: BreakingNewsViewModel by viewModels()
 
@@ -86,6 +86,8 @@ class BreakingNewsFragment : Fragment(),MainActivity.OnBottomNavigationFragmentR
             }
 
             swipeRefreshLayout.setOnRefreshListener {
+
+
                 viewModel.onManualRefresh()
             }
 
@@ -131,9 +133,7 @@ class BreakingNewsFragment : Fragment(),MainActivity.OnBottomNavigationFragmentR
             else -> super.onOptionsItemSelected(item)
         }
 
-    override fun onBottomNavigationFragmentReselected() {
-        binding.recyclerView.scrollToPosition(0)
-    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

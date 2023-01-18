@@ -18,7 +18,7 @@ import com.keyvani.breaking_news.viewmodel.BookmarksViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class BookmarksFragment : Fragment() , MainActivity.OnBottomNavigationFragmentReselectedListener {
+class BookmarksFragment : Fragment(){
 
     private var currentBinding: FragmentBookmarksBinding? = null
     private val binding get() = currentBinding!!
@@ -83,9 +83,7 @@ class BookmarksFragment : Fragment() , MainActivity.OnBottomNavigationFragmentRe
             else -> super.onOptionsItemSelected(item)
         }
 
-    override fun onBottomNavigationFragmentReselected() {
-        binding.recyclerView.scrollToPosition(0)
-    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

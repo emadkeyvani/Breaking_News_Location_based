@@ -2,7 +2,6 @@ package com.keyvani.breaking_news.utils
 
 import com.keyvani.breaking_news.BuildConfig
 
-
 object Constants {
 
     const val NETWORK_TIMEOUT = 60L

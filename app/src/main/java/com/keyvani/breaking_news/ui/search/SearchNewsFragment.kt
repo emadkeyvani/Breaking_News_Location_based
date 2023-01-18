@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.filter
 
 @AndroidEntryPoint
-class SearchNewsFragment : Fragment(), MainActivity.OnBottomNavigationFragmentReselectedListener {
+class SearchNewsFragment : Fragment() {
 
 
     private var currentBinding: FragmentSearchNewsBinding? = null
@@ -194,9 +194,9 @@ class SearchNewsFragment : Fragment(), MainActivity.OnBottomNavigationFragmentRe
             else -> super.onOptionsItemSelected(item)
         }
 
-    override fun onBottomNavigationFragmentReselected() {
+  /*  override fun onBottomNavigationFragmentReselected() {
         binding.recyclerView.scrollToPosition(0)
-    }
+    }*/
 
     override fun onDestroyView() {
         super.onDestroyView()

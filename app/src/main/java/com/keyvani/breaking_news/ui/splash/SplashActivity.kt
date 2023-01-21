@@ -13,7 +13,6 @@ import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
-import android.util.Log
 import android.view.Window
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.app.ActivityCompat
@@ -26,15 +25,18 @@ import com.keyvani.breaking_news.databinding.ActivitySplashBinding
 import com.keyvani.breaking_news.ui.MainActivity
 import com.keyvani.breaking_news.utils.Constants
 import org.json.JSONObject
+import timber.log.Timber
 import java.io.InputStream
 import java.util.*
+
+//got help from "Wandering in Google maps with Kotlin" on Udacity -> ADVANCED ANDROID APPS WITH KOTLIN - PART 2
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySplashBinding
 
-    private lateinit var mFusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private val locationRequestId = 100
     private var googleApiClient: GoogleApiClient? = null
     private val requestLocation = 199
@@ -46,21 +48,19 @@ class SplashActivity : AppCompatActivity() {
         this.supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(binding.root)
 
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         getLocation()
-
-
 
     }
 
-    private fun getLocation() :Boolean {
+    private fun getLocation(): Boolean {
 
         if (checkForLocationPermission()) {
             if (isLocationEnable()) {
                 updateLocation()
 
             } else {
-                enableLoc()
+                locationEnabling()
                 updateLocation()
 
 
@@ -71,11 +71,20 @@ class SplashActivity : AppCompatActivity() {
         return true
     }
 
+    /**
+    This code is checking whether location services are enabled on the device by checking if either the GPS
+    or network provider is enabled on the device's LocationManager.
+    It returns true if either provider is enabled, and false otherwise.
+     */
     private fun isLocationEnable(): Boolean {
         val locationManager: LocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
     }
 
+    /**
+    This code is for updating the device's location by requesting location updates from the Fused Location Provider
+    Client.
+     */
     private fun updateLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
@@ -84,13 +93,13 @@ class SplashActivity : AppCompatActivity() {
         ) {
             return
         }
-        mFusedLocationProviderClient.requestLocationUpdates(
-            locationRequest(), mLocationCallback,
+        fusedLocationProviderClient.requestLocationUpdates(
+            locationRequest(), locationCallback,
             Looper.myLooper()
         )
     }
 
-    private var mLocationCallback = object : LocationCallback() {
+    private var locationCallback = object : LocationCallback() {
         override fun onLocationResult(p0: LocationResult) {
 
             val location: Location? = p0.lastLocation
@@ -107,8 +116,8 @@ class SplashActivity : AppCompatActivity() {
     fun updateAddressUI(location: Location) {
 
         val addressList: ArrayList<Address>
-
-        val geocoder = Geocoder(applicationContext, Locale.getDefault())
+//https://stackoverflow.com/questions/74709477/get-address-from-current-location-kotlin
+        val geocoder = Geocoder(this, Locale.getDefault())
 
         addressList = geocoder.getFromLocation(
             location.latitude,
@@ -122,6 +131,8 @@ class SplashActivity : AppCompatActivity() {
 
     }
 
+    // inspire by an open source on github :
+    // https://github.com/ezatpanah/Local-Json-Into-Spinner
     private fun countryToCode(countryName: String): String {
         var country = ""
         var value = ""
@@ -139,6 +150,7 @@ class SplashActivity : AppCompatActivity() {
         return value
     }
 
+    //Looking for a permission to access to the location
     private fun checkForLocationPermission(): Boolean {
 
         if (ActivityCompat.checkSelfPermission(
@@ -155,11 +167,15 @@ class SplashActivity : AppCompatActivity() {
             val json = loadStringFromAsset(assetName)
             return JSONObject(json)
         } catch (e: Exception) {
-            Log.e("JsonUtils", e.toString())
+            Timber.tag("JsonUtils").e(e.toString())
         }
         return null
     }
 
+    /**
+    This code is loading a file from the assets folder of the app and returning it as a string.
+    The function takes an assetName as a parameter which is the name of the file that needs to be loaded.
+     */
     @Throws(Exception::class)
     private fun loadStringFromAsset(assetName: String): String {
         val `is`: InputStream = this.assets.open(assetName)
@@ -178,7 +194,11 @@ class SplashActivity : AppCompatActivity() {
         )
     }
 
-
+    /**
+    The method checks if the request code is equal to a specific value (locationRequestId) and, if so,
+    checks if the first element of the grantResults array is equal to PackageManager.PERMISSION_GRANTED.
+    If both conditions are true, it calls the getLocation() method.
+     */
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -193,7 +213,7 @@ class SplashActivity : AppCompatActivity() {
 
     }
 
-    private fun enableLoc() {
+    private fun locationEnabling() {
         googleApiClient = GoogleApiClient.Builder(this@SplashActivity)
             .addApi(LocationServices.API)
             .addConnectionCallbacks(object : GoogleApiClient.ConnectionCallbacks {
@@ -203,7 +223,7 @@ class SplashActivity : AppCompatActivity() {
                 }
             })
             .addOnConnectionFailedListener { connectionResult ->
-                Log.d("Location error", "Location error " + connectionResult.errorCode)
+                Timber.tag("Location error").d("Location error %s", connectionResult.errorCode)
             }.build()
         googleApiClient!!.connect()
         val builder = LocationSettingsRequest.Builder()
@@ -230,7 +250,8 @@ class SplashActivity : AppCompatActivity() {
             .build()
     }
 
-    private fun splashLoading(){
+    //got help from "Using MotionLayout to Animate Android Apps" on Udacity -> ADVANCED ANDROID APPS WITH KOTLIN - PART 1
+    private fun splashLoading() {
         binding.splashMotionLayout.transitionToState(R.id.end)
         binding.splashMotionLayout.addTransitionListener(object : MotionLayout.TransitionListener {
             override fun onTransitionStarted(motionLayout: MotionLayout?, startId: Int, endId: Int) {}

@@ -2,39 +2,15 @@ package com.keyvani.breaking_news.utils
 
 import android.view.View
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
-import com.google.android.material.snackbar.Snackbar
 
-fun Fragment.showSnackbar(
-    message: String,
-    duration: Int = Snackbar.LENGTH_LONG,
-    view: View = requireView()
-) {
-    Snackbar.make(view, message, duration).show()
-}
 
-val <T> T.exhaustive: T
-    get() = this
-
-inline fun SearchView.onQueryTextSubmit(crossinline listener: (String) -> Unit) {
-    this.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-        override fun onQueryTextSubmit(query: String?): Boolean {
-            if (!query.isNullOrBlank()) {
-                listener(query)
-            }
-            return true
-        }
-
-        override fun onQueryTextChange(newText: String?): Boolean {
-            return true
-        }
-    })
-}
-
-inline fun <T : View> T.showIfOrInvisible(condition: (T) -> Boolean) {
-    if (condition(this)) {
+//A function for visibility handling in different situations
+fun View.isVisible(isShowLoading: Boolean, container: View) {
+    if (isShowLoading) {
         this.visibility = View.VISIBLE
+        container.visibility = View.GONE
     } else {
-        this.visibility = View.INVISIBLE
+        this.visibility = View.GONE
+        container.visibility = View.VISIBLE
     }
 }

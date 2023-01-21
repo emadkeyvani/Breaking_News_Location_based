@@ -1,16 +1,13 @@
 package com.keyvani.breaking_news.repository
 
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
+
 import androidx.room.withTransaction
 import com.keyvani.breaking_news.api.ApiServices
-import com.keyvani.breaking_news.db.common.BreakingNews
-import com.keyvani.breaking_news.db.common.NewsArticle
-import com.keyvani.breaking_news.db.common.NewsArticleDatabase
-import com.keyvani.breaking_news.db.search.SearchNewsRemoteMediator
-import com.keyvani.breaking_news.utils.DataStatus
+import com.keyvani.breaking_news.db.FavNews
+import com.keyvani.breaking_news.db.LastNews
+import com.keyvani.breaking_news.db.NewsDao
+import com.keyvani.breaking_news.db.NewsDatabase
+import com.keyvani.breaking_news.utils.Resource
 import com.keyvani.breaking_news.utils.networkBoundResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -22,63 +19,72 @@ import java.util.concurrent.TimeUnit
 
 class NewsRepository @Inject constructor(
     private val newsApi: ApiServices,
-    private val newsArticleDb: NewsArticleDatabase,
+    private val newsDao: NewsDao,
+    private val newsDatabase: NewsDatabase
 ) {
 
-    private val newsArticleDao = newsArticleDb.newsArticleDao()
 
-    fun getBreakingNews(
+    /**
+    returns a Flow of Resource<List<LastNews>>.
+    The function takes several parameters: country, pageSize, manualUpdate, onFetchSuccess, and onFetchFailed.
+    The function uses the networkBoundResource function to fetch data from the network, save the result and return it.
+    The function uses the newsDao to access the local data and newsApi to access the remote data.
+    It maps the remote result to a new LastNews object and then uses the favoritedNews data to set
+    the isFav flag of the new object.
+     */
+    fun getLastNews(
         country: String,
-        forceRefresh: Boolean,
+        pageSize: Int,
+        manualUpdate: Boolean,
         onFetchSuccess: () -> Unit,
         onFetchFailed: (Throwable) -> Unit,
-    ): Flow<DataStatus<List<NewsArticle>>> =
+    ): Flow<Resource<List<LastNews>>> =
         networkBoundResource(
             query = {
-                newsArticleDao.getAllBreakingNewsArticles()
+                newsDao.getLastNewsList()
             },
             fetch = {
-                val response = newsApi.getBreakingNews(country)
+                val response = newsApi.getLastNews(country, pageSize)
                 response.articles
             },
-            saveFetchResult = { serverBreakingNewsArticles ->
-                val bookmarkedArticles = newsArticleDao.getAllBookmarkedArticles().first()
-                val breakingNewsArticles =
-                    serverBreakingNewsArticles.map { serverBreakingNewsArticle ->
-                        val isBookmarked = bookmarkedArticles.any {
-                            it.url == serverBreakingNewsArticle.url
+            saveFetchResult = { remoteResult ->
+                val favoritedNews = newsDao.getAllFavNews().first()
+                val lastNewsList =
+                    remoteResult.map { remoteResults ->
+                        val isFav = favoritedNews.any {
+                            it.url == remoteResults.url
                         }
-                        NewsArticle(
-                            title = serverBreakingNewsArticle.title,
-                            url = serverBreakingNewsArticle.url,
-                            thumbnailUrl = serverBreakingNewsArticle.urlToImage,
-                            isBookmarked = isBookmarked
+                        LastNews(
+                            title = remoteResults.title,
+                            url = remoteResults.url,
+                            imgUrl = remoteResults.urlToImage,
+                            isFav = isFav
                         )
                     }
 
-                val breakingNews = breakingNewsArticles.map { article ->
-                    BreakingNews(article.url)
+                val favNews = lastNewsList.map { article ->
+                    FavNews(article.url)
                 }
 
-                newsArticleDb.withTransaction {
-                    newsArticleDao.deleteAllBreakingNews()
-                    newsArticleDao.insertArticles(breakingNewsArticles)
-                    newsArticleDao.insertBreakingNews(breakingNews)
+                newsDatabase.withTransaction {
+                    newsDao.deleteAllFav()
+                    newsDao.addNewsIntoDB(lastNewsList)
+                    newsDao.addNewsIntoFav(favNews)
                 }
             },
-            shouldFetch = { cachedArticles ->
-                if (forceRefresh) {
-                    true
-                } else {
-                    val sortedArticles = cachedArticles.sortedBy { article ->
-                        article.updatedAt
-                    }
-                    val oldestTimestamp = sortedArticles.firstOrNull()?.updatedAt
-                    val needsRefresh = oldestTimestamp == null ||
-                            oldestTimestamp < System.currentTimeMillis() -
-                            TimeUnit.MINUTES.toMillis(60)
-                    needsRefresh
-                }
+
+            /**
+            This code is part of the networkBoundResource function and specifically the shouldFetch lambda of the getLastNews() function.
+            It is used to determine whether or not to fetch new data from the network. It takes a single parameter localNews,
+            which is the data that is stored locally.
+            If manualUpdate is true, the function returns true, indicating that new data should be fetched from the network.
+            If manualUpdate is false, the function sorts the localNews by the updatedTime field in ascending order.
+            It then checks the updatedTime of the oldest news item. If it is null or older than 60 minutes, the function returns true,
+            indicating that new data should be fetched from the network, otherwise it returns false.
+             */
+            shouldFetch = { localNews ->
+                if (manualUpdate) true else localNews.minByOrNull { it.updatedTime }?.updatedTime
+                    ?.let { it < System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(60) } ?: true
             },
             onFetchSuccess = onFetchSuccess,
             onFetchFailed = { t ->
@@ -89,27 +95,23 @@ class NewsRepository @Inject constructor(
             }
         )
 
-    fun getAllBookmarkedArticles(): Flow<List<NewsArticle>> =
-        newsArticleDao.getAllBookmarkedArticles()
+    //gets List of fav news local
+    fun getAllFavNews(): Flow<List<LastNews>> =
+        newsDao.getAllFavNews()
 
-    suspend fun updateArticle(article: NewsArticle) {
-        newsArticleDao.updateArticle(article)
+    //updates local news
+    suspend fun updateNews(article: LastNews) {
+        newsDao.updateNews(article)
     }
 
-    suspend fun resetAllBookmarks() {
-        newsArticleDao.resetAllBookmarks()
+
+
+    //reset local fav list
+    suspend fun favListReset() {
+        newsDao.favListReset()
     }
 
-    suspend fun deleteNonBookmarkedArticlesOlderThan(timestampInMillis: Long) {
-        newsArticleDao.deleteNonBookmarkedArticlesOlderThan(timestampInMillis)
-    }
+    suspend fun searchNews(query: String, page :Int,pageSize: Int) = newsApi.searchLastNews(query,page,pageSize)
 
-    @OptIn(ExperimentalPagingApi::class)
-    fun getSearchResultsPaged(query: String, refreshOnInit: Boolean): Flow<PagingData<NewsArticle>> =
-        Pager(
-            config = PagingConfig(pageSize = 20, maxSize = 200),
-            remoteMediator = SearchNewsRemoteMediator(query, newsApi, newsArticleDb, refreshOnInit),
-            pagingSourceFactory = { newsArticleDao.getSearchResultArticlesPaged(query) }
-        ).flow
 
 }

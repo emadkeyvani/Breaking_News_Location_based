@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/breakingNewsFragment"
+        android:id="@+id/LastNewsFragment"
         android:icon="@drawable/ic_baseline_newspaper_24"
         android:title="@string/breaking" />
 
     <item
-        android:id="@+id/searchNewsFragment"
+        android:id="@+id/searchFragment"
         android:icon="@drawable/ic_baseline_manage_search_24"
         android:title="@string/search" />
 
     <item
-        android:id="@+id/bookmarksFragment"
-        android:icon="@drawable/ic_baseline_bookmark_24"
-        android:title="@string/bookmarks" />
+        android:id="@+id/favoriteFragment"
+        android:icon="@drawable/baseline_favorite_24"
+        android:title="@string/favorites" />
 
 </menu>

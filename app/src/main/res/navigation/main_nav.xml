@@ -3,18 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
-    app:startDestination="@id/breakingNewsFragment">
+    app:startDestination="@id/LastNewsFragment">
 
     <fragment
-        android:id="@+id/breakingNewsFragment"
-        android:name="com.keyvani.breaking_news.ui.breakingnews.BreakingNewsFragment"
+        android:id="@+id/LastNewsFragment"
+        android:name="com.keyvani.breaking_news.ui.lastnews.LastNewsFragment"
         android:label="Breaking News" />
     <fragment
-        android:id="@+id/searchNewsFragment"
-        android:name="com.keyvani.breaking_news.ui.search.SearchNewsFragment"
+        android:id="@+id/searchFragment"
+        android:name="com.keyvani.breaking_news.ui.search.SearchFragment"
         android:label="Search News" />
     <fragment
-        android:id="@+id/bookmarksFragment"
-        android:name="com.keyvani.breaking_news.ui.bookmarks.BookmarksFragment"
+        android:id="@+id/favoriteFragment"
+        android:name="com.keyvani.breaking_news.ui.favorite.FavoriteFragment"
         android:label="Bookmarks" />
 </navigation>

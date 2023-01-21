@@ -15,7 +15,6 @@ Technologies and Libraries Used :
 * Caching (NetworkBoundResource)
 * Room
 * Glide
-* Paging 3
 * GPS
 
 ScreenShot :

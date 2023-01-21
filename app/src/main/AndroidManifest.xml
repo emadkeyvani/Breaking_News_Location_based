@@ -18,9 +18,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BreakingNews"
         tools:targetApi="31">
+        <!--https://developer.android.com/guide/topics/resources/runtime-changes-->
+        <!--According to review no.3 for solving the problem in search fragment when device rotates-->
+        <!--This code is added :  android:configChanges="keyboardHidden|orientation|screenSize"-->
         <activity
             android:name=".ui.MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false">
+
 
         </activity>
         <activity

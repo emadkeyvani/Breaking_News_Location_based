@@ -17,8 +17,6 @@ Technologies and Libraries Used :
 * Glide
 * GPS
 
-ScreenShot :
-
 
 <br>
 

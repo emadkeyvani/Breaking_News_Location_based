@@ -20,18 +20,6 @@ Technologies and Libraries Used :
 ScreenShot :
 
 
-<img alt="emadkeyvani Breaking_news" src="/screenshots/01.png" width="20%">
-  
-<img alt="emadkeyvani Breaking_news" src="/screenshots/02.png" width="20%">
- 
-<img alt="emadkeyvani Breaking_news" src="/screenshots/03.png" width="20%">
-  
-<img alt="emadkeyvani Breaking_news" src="/screenshots/04.png" width="20%">
-  
-<img alt="emadkeyvani Breaking_news" src="/screenshots/05.png" width="20%">
- 
-<img alt="emadkeyvani Breaking_news" src="/screenshots/06.png" width="20%">
-
 <br>
 
 MIT License

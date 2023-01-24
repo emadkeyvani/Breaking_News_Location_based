@@ -20,6 +20,15 @@ Technologies and Libraries Used :
 
 <br>
 
+<img alt="emadkeyvani Breaking_News" src="/screenshots/01.png" width="20%">
+<img alt="emadkeyvani Breaking_News" src="/screenshots/02.png" width="20%">
+<img alt="emadkeyvani Breaking_News" src="/screenshots/03.png" width="20%">
+<img alt="emadkeyvani Breaking_News" src="/screenshots/04.png" width="20%">
+<img alt="emadkeyvani Breaking_News" src="/screenshots/05.png" width="20%">
+
+
+<br>
+
 MIT License
 <br>
 

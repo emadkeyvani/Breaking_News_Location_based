@@ -16,5 +16,5 @@
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.keyvani.breaking_news.ui.favorite.FavoriteFragment"
-        android:label="Bookmarks" />
+        android:label="Favorites" />
 </navigation>
